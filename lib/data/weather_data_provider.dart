@@ -1,8 +1,10 @@
+import 'package:weather_app/models/dayly_weather.dart';
+
 import '../models/weather.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-Future<List> fetchWeather() async {
+Future<Map<String, List>> fetchWeather() async {
 
   const cityName = "Krasnodar";
   const apiKey = "6ef0b3ebe8fb6a2f140ebdeac5a09332";
@@ -19,8 +21,31 @@ Future<List> fetchWeather() async {
       var weatherListItem = Weather.fromJson(item, cityName);
       weatherList.add(weatherListItem);
     }
+    var daylyWeatherList = [];
+    Map<String, dynamic> weatherMap = {};
 
-    return weatherList;
+
+    for (var item in jsonData["list"]) {
+      var date = item["dt_txt"].split(' ')[0];
+      if (weatherMap.isEmpty | !weatherMap.containsKey(date)){
+
+        weatherMap[date] = [];
+        weatherMap[date].add(item);
+      }
+      else{
+        weatherMap[date].add(item);
+      }
+    }
+    for (var key in weatherMap.keys){
+      var daylyWeatherListItem = DaylyWeather.fromJson(weatherMap[key], key);
+      daylyWeatherList.add(daylyWeatherListItem);
+    }
+
+    Map<String, List> weatherData = {
+      "hourly": weatherList,
+      "dayly": daylyWeatherList
+    };
+    return weatherData;
   } else {
     throw Exception('Failed to load weather');
   }

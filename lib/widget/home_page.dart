@@ -13,47 +13,85 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
-  late Future<List> _futureWeather;
+  late Future<Map<String, List>> _weatherData;
 
   @override
   void initState() {
     super.initState();
-    _futureWeather = fetchWeather();
+    _weatherData = fetchWeather();
+
+    
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text("Krasnodar")
-        ),
-        body: FutureBuilder<List>(
-          future: _futureWeather,
+      child: FutureBuilder<Map<String, List>>(
+          future: _weatherData,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              final data = snapshot.data!;
-
-              return Center(
-                child: Column(
-                  children: [
-                    City(data: data[0].city),
-                    Temperature(data: data[0].temp),
-                    Description(data: data[0].description),
-                    Expanded(
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: data.length,
-                        itemBuilder: (context, index) => SizedBox(
-                          height: 50,
-                          width: 60,
-                          child: ListTile(
-                            title: Text(data[index].temp.toString()),
+              final hourylyData = snapshot.data!["hourly"];
+              final daylyData = snapshot.data!["dayly"];
+              
+              return Scaffold(
+                appBar: AppBar(
+                  title: City(data: hourylyData?[0].city),
+                ),
+                body: Center(
+                  child: Column(
+                    children: [
+                      Temperature(data: hourylyData?[0].temp),
+                      Description(data: hourylyData?[0].description),
+                      Container(
+                        margin: const EdgeInsets.symmetric(vertical: 20),
+                        height: 50,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: hourylyData?.length,
+                          itemBuilder: (context, index) => SizedBox(
+                            height: 50,
+                            width: 60,
+                            child: ListTile(
+                              title: Text(hourylyData![index].temp.toString()),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                      Expanded(
+                        child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          itemCount: daylyData?.length,
+                          itemBuilder: (context, index) =>
+                            Row(
+                              children: [Expanded(
+                                child: SizedBox(
+                                  width: 50,
+                                  height: 50,
+                                  child: Text(daylyData![index].date.toString()),),
+                              ),
+                                Expanded(
+                                  child: SizedBox(
+                                  width: 50,
+                                  height: 50,
+                                  child: Text(daylyData[index].averageTemp.toString()),),
+                                ),
+                                Expanded(
+                                  child: SizedBox(
+                                  width: 50,
+                                  height: 50,
+                                  child: Text(daylyData[index].description.toString()),),
+                                ),
+                              ]
+                            )
+                            ),
+                            // SizedBox(
+                            //   height: 30,
+                            //   child: ListTile(
+                            //     title: Text(daylyData[index].averageTemp.toString()),)
+                            // ),
+                          ),
+                    ],
+                  ),
                 ),
               );
             } else {
@@ -61,7 +99,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             }
           },
         ),
-      ),
     );
   }
 }
