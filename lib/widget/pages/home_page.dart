@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import ' components/city.dart';
-import ' components/description.dart';
-import ' components/temperature.dart';
-import '../data/weather_data_provider.dart';
+import '../ components/city.dart';
+import '../ components/description.dart';
+import '../ components/temperature.dart';
+import '../../data/weather_data_provider.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -24,7 +24,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {    
     return SafeArea(
       child: FutureBuilder<Map<String, List>>(
           future: _weatherData,
@@ -84,11 +84,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                               ]
                             )
                             ),
-                            // SizedBox(
-                            //   height: 30,
-                            //   child: ListTile(
-                            //     title: Text(daylyData[index].averageTemp.toString()),)
-                            // ),
                           ),
                     ],
                   ),

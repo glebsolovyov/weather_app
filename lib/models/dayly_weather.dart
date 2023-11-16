@@ -19,8 +19,6 @@ class DaylyWeather {
   
   date = date.split("-").sublist(1, 3).join(".");
 
-  print(date);
-
   Map<String, int> countMap = {};
   
   String mostFrequentValue = "";
