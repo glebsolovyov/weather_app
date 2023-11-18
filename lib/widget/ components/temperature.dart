@@ -1,13 +1,25 @@
 import 'package:flutter/material.dart';
 
-class Temperature extends StatelessWidget {
-  const Temperature({super.key, required this.data});
+class MainTemperature extends StatelessWidget {
+  const MainTemperature({super.key, required this.data});
 
-  final int data;
+  final String data;
 
   @override
   Widget build(BuildContext context) => Text(
         data.toString(),
-        style: const TextStyle(fontSize: 50),
+        style: const TextStyle(fontSize: 80),
+      );
+}
+
+class HourlyTemperature extends StatelessWidget {
+  const HourlyTemperature({super.key, required this.data});
+
+  final String data;
+
+  @override
+  Widget build(BuildContext context) => Text(
+        data.toString(),
+        style: const TextStyle(fontSize: 15),
       );
 }

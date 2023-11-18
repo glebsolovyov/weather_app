@@ -6,5 +6,8 @@ class Description extends StatelessWidget {
   final String data;
 
   @override
-  Widget build(BuildContext context) => Text(data.toString());
+  Widget build(BuildContext context) => Text(
+    data.toString(),
+    style: const TextStyle(fontSize: 20)
+    );
 }

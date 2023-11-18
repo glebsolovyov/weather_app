@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/data/Database.dart';
 import 'widget/ components/bottom_navigation.dart';
 
-void main() {
+void main() async{
   runApp(const MyApp());
-  // dbConnect();
+  await DBProvider.db.database;
 }
 
 class MyApp extends StatelessWidget {

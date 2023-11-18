@@ -35,58 +35,92 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               
               return Scaffold(
                 appBar: AppBar(
+                  surfaceTintColor: Colors.transparent,
                   title: City(data: hourylyData?[0].city),
                 ),
                 body: Center(
                   child: Column(
                     children: [
-                      Temperature(data: hourylyData?[0].temp),
+                      MainTemperature(data: ("${hourylyData?[0].temp.toString()}°")),
                       Description(data: hourylyData?[0].description),
-                      Container(
-                        margin: const EdgeInsets.symmetric(vertical: 20),
-                        height: 50,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: hourylyData?.length,
-                          itemBuilder: (context, index) => SizedBox(
-                            height: 50,
-                            width: 60,
-                            child: ListTile(
-                              title: Text(hourylyData![index].temp.toString()),
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 50, right: 15, left: 15),
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: 1,
+                            itemBuilder: (context, index) {
+                              return Column(
+                                children: [
+                                  SizedBox(
+                                  height: 140,
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(vertical: 20),
+                                    height: 100,
+                                    decoration: myBoxDecoration(),
+                                    child: ListView.builder(
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: hourylyData?.length,
+                                      itemBuilder: (context, index) => SizedBox(
+                                        height: 50,
+                                        width: 100,
+                                        child: Center(
+                                          child: Column(
+                                            children: [
+                                              Padding(
+                                              padding: EdgeInsets.only(bottom: 5, top:10),
+                                              child: Text(hourylyData![index].time.toString())),
+                                              Padding(
+                                              padding: EdgeInsets.only(bottom: 5),
+                                              child: Icon(Icons.cloud)),
+                                              HourlyTemperature(data: ("${hourylyData[0].temp.toString()}°")),
+                                            ]
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                          SizedBox(
+                            height: 350,
+                            child: Container(
+                              decoration: myBoxDecoration(),
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                scrollDirection: Axis.vertical,
+                                itemCount: daylyData?.length,
+                                itemBuilder: (context, index) =>
+                                  Card(
+                                    child: Row(
+                                      children: [SizedBox(
+                                        width: 120,
+                                        height: 50,
+                                        child: Text(daylyData![index].weekday.toString()),),
+                                        SizedBox(
+                                        width: 70,
+                                        height: 50,
+                                        child: Text("${daylyData[index].averageTemp.toString()}°"),),
+                                        SizedBox(
+                                        width: 90,
+                                        height: 50,
+                                        child: Text(daylyData[index].description.toString()),),
+                                        SizedBox(
+                                        width: 40,
+                                        height: 50,
+                                        child: Text(daylyData[index].averageWindSpeed.toString()),),
+                                      ]
+                                    ),
+                                  )
+                                  ),
                             ),
-                          ),
+                          )
+                                            ]);
+                            },
+                                          ),
                         ),
                       ),
-                      Expanded(
-                        child: ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          itemCount: daylyData?.length,
-                          itemBuilder: (context, index) =>
-                            Row(
-                              children: [Expanded(
-                                child: SizedBox(
-                                  width: 50,
-                                  height: 50,
-                                  child: Text(daylyData![index].date.toString()),),
-                              ),
-                                Expanded(
-                                  child: SizedBox(
-                                  width: 50,
-                                  height: 50,
-                                  child: Text(daylyData[index].averageTemp.toString()),),
-                                ),
-                                Expanded(
-                                  child: SizedBox(
-                                  width: 50,
-                                  height: 50,
-                                  child: Text(daylyData[index].description.toString()),),
-                                ),
-                              ]
-                            )
-                            ),
-                          ),
-                    ],
-                  ),
+                  ])
                 ),
               );
             } else {
@@ -96,4 +130,14 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         ),
     );
   }
+}
+BoxDecoration myBoxDecoration() {
+  return BoxDecoration(
+    border: Border.all(
+      width: 3.0
+    ),
+    borderRadius: BorderRadius.all(
+        Radius.circular(10.0) //                 <--- border radius here
+    ),
+  );
 }

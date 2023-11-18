@@ -4,12 +4,10 @@ import '../models/weather.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-Future<Map<String, List>> fetchWeather() async {
-
-  const cityName = "Krasnodar";
+Future<Map<String, List>> fetchWeather(String cityName) async {
   const apiKey = "6ef0b3ebe8fb6a2f140ebdeac5a09332";
-  const apiUrl =
-      "https://api.openweathermap.org/data/2.5/forecast?q=$cityName&units=metric&appid=$apiKey";
+  String apiUrl =
+      "https://api.openweathermap.org/data/2.5/forecast?q=$cityName&units=metric&lang=ru&appid=$apiKey";
 
   final response = await http.get(Uri.parse(apiUrl));
 
@@ -21,12 +19,12 @@ Future<Map<String, List>> fetchWeather() async {
       var weatherListItem = Weather.fromJson(item, cityName);
       weatherList.add(weatherListItem);
     }
+
     var daylyWeatherList = [];
     Map<String, dynamic> weatherMap = {};
 
-
     for (var item in jsonData["list"]) {
-      var date = item["dt_txt"].split(' ')[0];
+      var date = item["dt_txt"].split(' ')[0];      
       if (weatherMap.isEmpty | !weatherMap.containsKey(date)){
 
         weatherMap[date] = [];
@@ -36,6 +34,7 @@ Future<Map<String, List>> fetchWeather() async {
         weatherMap[date].add(item);
       }
     }
+    
     for (var key in weatherMap.keys){
       var daylyWeatherListItem = DaylyWeather.fromJson(weatherMap[key], key);
       daylyWeatherList.add(daylyWeatherListItem);
@@ -45,6 +44,7 @@ Future<Map<String, List>> fetchWeather() async {
       "hourly": weatherList,
       "dayly": daylyWeatherList
     };
+
     return weatherData;
   } else {
     throw Exception('Failed to load weather');
