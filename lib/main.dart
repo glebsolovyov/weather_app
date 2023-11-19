@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/data/Database.dart';
+import 'package:weather_app/data/database.dart';
 import 'widget/ components/bottom_navigation.dart';
 
 void main() async{

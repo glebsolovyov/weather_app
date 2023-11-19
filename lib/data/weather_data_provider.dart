@@ -4,7 +4,7 @@ import '../models/weather.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-  fetchWeather(String cityName) async {
+Future<Map<String, List>> fetchWeather(String cityName) async {
   const apiKey = "6ef0b3ebe8fb6a2f140ebdeac5a09332";
   String apiUrl =
       "https://api.openweathermap.org/data/2.5/forecast?q=$cityName&units=metric&lang=ru&appid=$apiKey";
@@ -24,18 +24,16 @@ import 'package:http/http.dart' as http;
     Map<String, dynamic> weatherMap = {};
 
     for (var item in jsonData["list"]) {
-      var date = item["dt_txt"].split(' ')[0];      
-      if (weatherMap.isEmpty | !weatherMap.containsKey(date)){
-
+      var date = item["dt_txt"].split(' ')[0];
+      if (weatherMap.isEmpty | !weatherMap.containsKey(date)) {
         weatherMap[date] = [];
         weatherMap[date].add(item);
-      }
-      else{
+      } else {
         weatherMap[date].add(item);
       }
     }
-    
-    for (var key in weatherMap.keys){
+
+    for (var key in weatherMap.keys) {
       var daylyWeatherListItem = DaylyWeather.fromJson(weatherMap[key], key);
       daylyWeatherList.add(daylyWeatherListItem);
     }
@@ -47,6 +45,6 @@ import 'package:http/http.dart' as http;
 
     return weatherData;
   } else {
-    return null;
+    throw Exception();
   }
 }
