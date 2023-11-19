@@ -30,7 +30,8 @@ class DBProvider {
         onCreate: (Database db, int version) async {
       await db.execute("CREATE TABLE City ("
           "id INTEGER PRIMARY KEY,"
-          "name TEXT)");
+          "name TEXT,"
+          "isSelected INTEGER)");
     });
   }
 
@@ -39,11 +40,12 @@ class DBProvider {
     
     var table = await db?.rawQuery("SELECT MAX(id)+1 as id FROM City");
     Object? id = table!.first["id"];
+    Object? isSelected = 0;
     //insert to the table using the new id
     var raw = await db!.rawInsert(
-        "INSERT Into City (id,name)"
-        " VALUES (?,?)",
-        [id, name]);
+        "INSERT Into City (id,name,isSelected)"
+        " VALUES (?,?,?)",
+        [id, name, isSelected]);
     return raw;
   }
 
@@ -52,5 +54,11 @@ class DBProvider {
     var res = await db?.query("City");
     List<City> list = res!.isNotEmpty ? res.map((c) => City.fromJson(c)).toList() : [];
     return list;
+  }
+
+  Future<City?> getSelectedCity() async {
+    final db = await database;
+    var res = await db?.query("City", where: "isSelected = ?", whereArgs: [1]);
+    return res!.isNotEmpty ? City.fromJson(res.first) : null;
   }
 }

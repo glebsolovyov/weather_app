@@ -17,47 +17,74 @@ class _CitiesPage extends State<CitiesPage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:
-          Expanded(
-            child: TextField(
+        title:TextField(
               onSubmitted: (text) {
-                setState(() {
-                  _newCityName = text;
-                });
-                DBProvider.db.newCity(text);
+                // setState(() {
+                //   _newCityName = text;
+                // });
+                print(fetchWeather(text) == null);
+
+                try{
+                  fetchWeather(text);
+                }
+                on Object catch (e) {
+                  print(e);
+                }
+                print("on sumbitted");
+                Text("on sumbitted");
+                // Center(
+                //   child: FutureBuilder(
+                //     future: fetchWeather(text),
+                //     builder: (context, snapshot) {
+                //       if (snapshot.hasData){
+                //         print("fdsfd");
+                //         return Text(snapshot.data.toString());
+                //       }
+                //       else {
+                //         return Text("fdsf");
+                //       }
+                //     },),
+                // );
+                // DBProvider.db.newCity(text);
+                // } else {
+                //   Text("Город не найден");
+                // }
+
               },
             ),
           ),
-      ),
-               body: FutureBuilder<List<City>>(
-                     future: DBProvider.db.getAllCities(),
-                     builder:(context, AsyncSnapshot<List<City>> snapshot) {
-                       if (snapshot.data != null) {
-                        return ListView.builder(
-                            itemCount: snapshot.data!.length,
-                            itemBuilder:(context, index) {
-                              // return FutureBuilder<Map<String, List>>(
-                              //   future: fetchWeather(),
-                              //   builder: (context, weatherSnapshot) {(
-                              //     child: Text(snapshot.data![index].name),
-                              //     );
-                              //   }
-                              // );
-                              }
-                            );
-                        } else {
-                            return Center(
-                              child: Text("fds")
-                        );
-                       }
-                     },
-                  ),
-             );
-
-            
-      
-
-
+      body: FutureBuilder(
+        future: DBProvider.db.getAllCities(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+          return ListView.builder(
+            itemCount: snapshot.data?.length,
+            itemBuilder: ((context, index) {
+              return FutureBuilder<Map<String, List>>(
+                future: fetchWeather(snapshot.data![index].name),
+                builder: (context, citySnapshot){
+                  if (citySnapshot.hasData){
+                  final hourlyData = citySnapshot.data!["hourly"]![0];
+                 return Card(
+                    child: Row(
+                      children: [
+                        Text(snapshot.data![index].name),
+                        Text(hourlyData.temp.toString())
+                      ],
+                    ),
+                    );
+                } else {
+                  return Text("Нет инф");
+                }
+                } 
+                );
+            }
+            ));
+        }else {
+          return Text("Города не добавлены");
+        }}
+        )
+    );
   }
 
 }

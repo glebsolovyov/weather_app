@@ -4,7 +4,7 @@ import '../models/weather.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-Future<Map<String, List>> fetchWeather(String cityName) async {
+  fetchWeather(String cityName) async {
   const apiKey = "6ef0b3ebe8fb6a2f140ebdeac5a09332";
   String apiUrl =
       "https://api.openweathermap.org/data/2.5/forecast?q=$cityName&units=metric&lang=ru&appid=$apiKey";
@@ -47,6 +47,6 @@ Future<Map<String, List>> fetchWeather(String cityName) async {
 
     return weatherData;
   } else {
-    throw Exception('Failed to load weather');
+    return null;
   }
 }

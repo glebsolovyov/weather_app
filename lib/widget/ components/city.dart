@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class City extends StatelessWidget {
-  const City({super.key, required this.data});
+class CityWidget extends StatelessWidget {
+  const CityWidget({super.key, required this.data});
 
   final String data;
 
