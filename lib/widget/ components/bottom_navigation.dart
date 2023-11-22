@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/data/db_city.dart';
+import 'package:weather_app/data/get_themes.dart';
 import 'package:weather_app/models/city.dart';
 
 import '../pages/cities_page.dart';
@@ -12,14 +13,15 @@ class BottomNavigation extends StatefulWidget {
   State<BottomNavigation> createState() => BottomNavigationState();
 }
 
-class BottomNavigationState extends State<BottomNavigation> with TickerProviderStateMixin {
+class BottomNavigationState extends State<BottomNavigation>
+    with TickerProviderStateMixin {
   int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     Widget page;
 
-    switch(selectedIndex){
+    switch (selectedIndex) {
       case 0:
         page = MyHomePage();
       case 1:
@@ -31,25 +33,28 @@ class BottomNavigationState extends State<BottomNavigation> with TickerProviderS
     }
 
     return Scaffold(
-        body: page,
-        bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: "Погода"),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.favorite),
-              label: "Города"),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.comment),
-              label: "Комментарии"),
-        ],
-        currentIndex: selectedIndex,
-        onTap: (value) {
-            setState(() {
-              selectedIndex = value;
-            });
-          },),
-      );
+      body: page,
+      bottomNavigationBar: FutureBuilder(
+          future: getColor(),
+          builder: (context, snapshot) {
+            return BottomNavigationBar(
+              backgroundColor: snapshot.data,
+              items: const <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.home), label: "Погода"),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.location_city), label: "Города"),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.comment), label: "Комментарии"),
+              ],
+              currentIndex: selectedIndex,
+              onTap: (value) {
+                setState(() {
+                  selectedIndex = value;
+                });
+              },
+            );
+          }),
+    );
   }
 }

@@ -92,6 +92,28 @@ class DBProvider {
     return res!.isNotEmpty ? City.fromJson(res.first) : null;
   }
 
+  setSelected(City city) async {
+    final db = await database;
+
+    var lastSelectedCity = await getSelectedCity();
+
+    City lastSelected = City(
+        id: lastSelectedCity!.id, name: lastSelectedCity.name, isSelected: 0);
+
+    await db!.update("City", lastSelected.toJson(),
+        where: "id = ?", whereArgs: [lastSelected.id]);
+    City selected = City(id: city.id, name: city.name, isSelected: 1);
+    print(selected.toJson());
+    var res = await db.update("City", selected.toJson(),
+        where: "id = ?", whereArgs: [city.id]);
+    return res;
+  }
+
+  isCitySelected(City city) {
+    if (city.isSelected == 1) return true;
+    return false;
+  }
+
   deleteCity(int id) async {
     final db = await database;
     return db!.delete("City", where: "id = ?", whereArgs: [id]);

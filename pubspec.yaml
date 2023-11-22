@@ -23,3 +23,15 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/images/thunderstorm.png
+    - assets/images/rain.png
+    - assets/images/snow.png
+    - assets/images/contrast.png
+    - assets/images/cloud.png
+    - assets/images/thermometer.png
+    - assets/images/wind.png
+    - assets/images/plus.png
+    - assets/images/cancel.png
+    - assets/images/heart.png
+    - assets/images/heart-2.png

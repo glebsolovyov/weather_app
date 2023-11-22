@@ -37,7 +37,6 @@ Future<Map<String, List>> fetchWeather(String cityName) async {
       var daylyWeatherListItem = DaylyWeather.fromJson(weatherMap[key], key);
       daylyWeatherList.add(daylyWeatherListItem);
     }
-
     Map<String, List> weatherData = {
       "hourly": weatherList,
       "dayly": daylyWeatherList
