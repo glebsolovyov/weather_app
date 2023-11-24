@@ -27,7 +27,7 @@ class DBProvider {
   initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     print(documentsDirectory);
-    String path = join("/Users/glebsolovyov/flutter_projects/weather_app/", "weather_app.sqlite");
+    String path = join(documentsDirectory.path, "weather_app.sqlite");
     return await openDatabase(path, version: 1, onOpen: (db) {},
         onCreate: (Database db, int version) async {
       await db.execute("CREATE TABLE User("

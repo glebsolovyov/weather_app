@@ -106,8 +106,7 @@ class _AuthScreen extends State<AuthScreen> with TickerProviderStateMixin {
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(16),
                                       ),
-                                      backgroundColor:
-                                          Colors.white.withOpacity(0.3)),
+                                      ),
                                   child: Text(
                                     "Регистрация",
                                   ),
