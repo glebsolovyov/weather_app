@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/data/db_city.dart';
 import 'package:weather_app/data/get_themes.dart';
-import 'package:weather_app/models/city.dart';
 
 import '../pages/cities_page.dart';
 import '../pages/home_page.dart';
+import '../pages/profile_screen.dart';
 
 class BottomNavigation extends StatefulWidget {
   const BottomNavigation({super.key});
@@ -20,14 +19,14 @@ class BottomNavigationState extends State<BottomNavigation>
   @override
   Widget build(BuildContext context) {
     Widget page;
-
+    
     switch (selectedIndex) {
       case 0:
         page = MyHomePage();
       case 1:
         page = CitiesPage();
       case 2:
-        page = Placeholder();
+        page = ProfileScreen();
       default:
         throw UnimplementedError("no widget for $selectedIndex");
     }
@@ -45,7 +44,7 @@ class BottomNavigationState extends State<BottomNavigation>
                 BottomNavigationBarItem(
                     icon: Icon(Icons.location_city), label: "Города"),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.comment), label: "Комментарии"),
+                    icon: Icon(Icons.person), label: "Профиль"),
               ],
               currentIndex: selectedIndex,
               onTap: (value) {

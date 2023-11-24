@@ -12,25 +12,6 @@ Future<String> getWeatherDescription() async {
   return weatherDescription;
 }
 
-Future<ThemeData> getTheme() async {
-  var weatherDescription = await getWeatherDescription();
-  switch (weatherDescription) {
-    case "Clear" || "Snow":
-      return ThemeData(
-          scaffoldBackgroundColor: Color.fromRGBO(150, 222, 248, 1),
-          useMaterial3: true,
-          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue),
-          appBarTheme:
-              AppBarTheme(backgroundColor: Color.fromRGBO(150, 222, 248, 1)));
-    default:
-      return ThemeData(
-          scaffoldBackgroundColor: Color.fromRGBO(111, 118, 128, 1),
-          useMaterial3: true,
-          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.grey),
-          appBarTheme:
-              AppBarTheme(backgroundColor: Color.fromRGBO(111, 118, 128, 1)));
-  }
-}
 
 Future<Color> getColor() async {
   var weatherDescription = await getWeatherDescription();
@@ -90,30 +71,4 @@ String getTranslate(String weatherDescription) {
     default:
       return "Sunny";
   }
-}
-
-SizedBox getButton(City city) {
-  var isSelected = DBProvider.db.isCitySelected(city);
-  if (isSelected) {
-    return SizedBox(
-      width: 30,
-      height: 30,
-      child: IconButton(
-        icon: Image.asset("assets/images/heart-2.png"),
-        onPressed: () {
-          DBProvider.db.setSelected(city);
-        },
-      ),
-    );
-  }
-  return SizedBox(
-    width: 30,
-    height: 30,
-    child: IconButton(
-      icon: Image.asset("assets/images/heart.png"),
-      onPressed: () {
-        DBProvider.db.setSelected(city);
-      },
-    ),
-  );
 }
