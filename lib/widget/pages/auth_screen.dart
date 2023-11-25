@@ -1,14 +1,12 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:weather_app/data/database.dart';
-import 'package:weather_app/widget/pages/home_page.dart';
 import 'package:weather_app/widget/pages/registration_screen.dart';
 
 import '../ components/bottom_navigation.dart';
 import '../ components/text_form_decoration.dart';
 import '../../data/auth_validators.dart';
-import '../../main.dart';
+import '../../data/get_themes.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -60,75 +58,82 @@ class _AuthScreen extends State<AuthScreen> with TickerProviderStateMixin {
                 AnimatedSwitcher(
                   duration: Duration(milliseconds: 300),
                   child: buttonIndex == 1
-                      ? Padding(
-                          padding: EdgeInsets.only(top: 25.0),
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                width: 120,
-                                height: 40,
-                                child: ElevatedButton(
-                                  onPressed: login,
-                                  style: ElevatedButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(16),
-                                      ),
-                                      backgroundColor:
-                                          Colors.white.withOpacity(0.3)),
-                                  child: Text(
-                                    "Войти",
-                                  ),
-                                ),
-                              ),
-                              TextButton(
-                                  onPressed: () => setState(() {
-                                        if (buttonIndex == 1) {
-                                          buttonIndex++;
-                                        } else {
-                                          buttonIndex--;
-                                        }
-                                      }),
-                                  child: Text(
-                                      "Еще нет аккаунта? Зарегестрируйтесь"))
-                            ],
-                          ),
-                        )
-                      : Padding(
-                          padding: EdgeInsets.only(top: 25.0),
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                width: 150,
-                                height: 40,
-                                child: ElevatedButton(
-                                  onPressed: register,
-                                  style: ElevatedButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(16),
-                                      ),
-                                      ),
-                                  child: Text(
-                                    "Регистрация",
-                                  ),
-                                ),
-                              ),
-                              TextButton(
-                                  onPressed: () => setState(() {
-                                        if (buttonIndex == 1) {
-                                          buttonIndex++;
-                                        } else {
-                                          buttonIndex--;
-                                        }
-                                      }),
-                                  child: Text("Уже есть аккаунт? Войдите"))
-                            ],
-                          ),
-                        ),
+                      ? authButton()
+                      : registerButton(),
                 ),
               ]),
         ),
       ),
     );
+  }
+
+  Padding registerButton() {
+    return Padding(
+                        padding: EdgeInsets.only(top: 25.0),
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              width: 150,
+                              height: 40,
+                              child: ElevatedButton(
+                                onPressed: register,
+                                style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                    ),
+                                child: Text(
+                                  "Регистрация",
+                                ),
+                              ),
+                            ),
+                            TextButton(
+                                onPressed: () => setState(() {
+                                      if (buttonIndex == 1) {
+                                        buttonIndex++;
+                                      } else {
+                                        buttonIndex--;
+                                      }
+                                    }),
+                                child: Text("Уже есть аккаунт? Войдите"))
+                          ],
+                        ),
+                      );
+  }
+
+  Padding authButton() {
+    return Padding(
+        padding: EdgeInsets.only(top: 25.0),
+        child: Column(
+          children: [
+            SizedBox(
+              width: 120,
+              height: 40,
+              child: ElevatedButton(
+                onPressed: login,
+                style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                ),
+                child: Text(
+                  "Войти",
+                ),
+              ),
+            ),
+            TextButton(
+                onPressed: () => setState(() {
+                      if (buttonIndex == 1) {
+                        buttonIndex++;
+                      } else {
+                        buttonIndex--;
+                      }
+                    }),
+                child: Text(
+                    "Еще нет аккаунта? Зарегестрируйтесь"))
+          ],
+        ),
+      );
   }
 
   login() async {

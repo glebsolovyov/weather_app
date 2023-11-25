@@ -63,8 +63,7 @@ class RegistrationScreenState extends State<RegistrationScreen>
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(16),
                                   ),
-                                  backgroundColor:
-                                      Colors.white.withOpacity(0.3)),
+                                 ),
                               child: Text(
                                 "Регистрация",
                               ),
